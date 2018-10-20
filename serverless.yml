@@ -25,6 +25,10 @@ functions:
           path: /gyms/{gymId}/users
           method: GET
           resp: http
+          request:
+            parameters:
+              paths:
+                gymId: true
   getUserById:
     handler: users/handler.getUserById
     events:
@@ -32,3 +36,19 @@ functions:
           path: /gyms/{gymId}/users/{userId}
           method: GET
           resp: http
+          request:
+            parameters:
+              paths:
+                gymId: true
+                userId: true
+  createUser:
+    handler: users/handler.createUser
+    events:
+      - http:
+          path: /gyms/{gymId}/users
+          method: POST
+          resp: http
+          request:
+            parameters:
+              paths:
+                gymId: true

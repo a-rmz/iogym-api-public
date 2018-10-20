@@ -1,4 +1,4 @@
-const { getUserById, getUsersByGym } = require('./controller');
+const { getUserById, getUsersByGym, createUser } = require('./controller');
 const {
   isArrayEmpty, isObjectEmpty,
   resJson, resNotFound,
@@ -22,4 +22,16 @@ module.exports.getUserById = async (params) => {
     return resNotFound('User');
   }
   return resJson(200, { user });
+};
+
+module.exports.createUser = async (params) => {
+  const { pathParameters: { gymId }, body } = params;
+  const parsedBody = JSON.parse(body);
+
+  const user = await createUser(gymId, parsedBody);
+
+  if (isObjectEmpty(user)) {
+    return resNotFound('User');
+  }
+  return resJson(201, { user });
 };
