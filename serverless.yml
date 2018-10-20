@@ -1,0 +1,34 @@
+service: iogym
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: ${file(./.env.yml):stage}
+  region: ${file(./.env.yml):region}
+  role: ${file(./.env.yml):aws-role}
+  vpc:
+    securityGroups: ${file(./.env.yml):security-groups}
+    subnets: ${file(./.env.yml):subnets}
+  environment: ${file(./.env.yml):environment}
+
+package:
+  exclude:
+    - .git/**
+    - .gitignore
+    - .env.yml
+    - .eslintrc.json
+
+functions:
+  getUsersByGym:
+    handler: users/handler.getUsersByGym
+    events:
+      - http:
+          path: /gyms/{gymId}/users
+          method: GET
+          resp: http
+  getUserById:
+    handler: users/handler.getUserById
+    events:
+      - http:
+          path: /gyms/{gymId}/users/{userId}
+          method: GET
+          resp: http

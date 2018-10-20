@@ -1,0 +1,23 @@
+{
+  "name": "iogym-public-api",
+  "version": "0.0.1",
+  "description": "Public API for the IoGym platform 💪🏼",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "deploy": "serverless deploy -v",
+    "remove": "serverless remove"
+  },
+  "author": "Alex Ramirez <armzprz@gmail.com>",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "pg": "^7.5.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.7.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
+  }
+}
