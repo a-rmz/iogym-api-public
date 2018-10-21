@@ -15,27 +15,23 @@ const getUsersByGym = async (gymId) => {
   return db.get(query);
 };
 
-const getUserById = async (userId, gymId) => {
+const getUserById = async (userId) => {
   const query = {
     text: `
-    SELECT u.user_id, u.rfid_code, u.first_name, u.last_name, u.email, u.birthday
-    FROM users AS u
-    INNER JOIN user_gym
-    ON u.user_id = user_gym.user_id
-    WHERE user_gym.gym_id = $2
-    AND user_gym.user_id = $1
-    AND u.user_id = $1
+    SELECT *
+    FROM users
+    WHERE user_id = $1
     `,
-    values: [userId, gymId],
+    values: [userId],
   };
 
   return db.getOne(query);
 };
 
-const createUser = async (gymId, {
+const createUser = async ({
   rfid_code, first_name, last_name, email, birthday,
 }) => {
-  const query1 = {
+  const query = {
     text: `
     INSERT INTO users
     (rfid_code, first_name, last_name, email, birthday)
@@ -45,26 +41,53 @@ const createUser = async (gymId, {
     values: [rfid_code, first_name, last_name, email, birthday],
   };
 
-  try {
-    const user = await db.create(query1);
-    const query2 = {
-      text: `
-      INSERT INTO user_gym (user_id, gym_id)
-      VALUES ($1, $2);
-      `,
-      values: [user.user_id, gymId],
-    };
+  return db.create(query);
+};
 
-    await db.create(query2);
-    return user;
-  } catch (e) {
-    console.error(e);
-    return {};
-  }
+const removeUser = async (userId) => {
+  const query = {
+    text: `
+    DELETE
+    FROM users
+    WHERE user_id = $1
+    `,
+    values: [userId],
+  };
+
+  return db.delete(query);
+};
+
+const removeUserFromGym = async (userId, gymId) => {
+  const query = {
+    text: `
+    DELETE
+    FROM user_gym
+    WHERE user_gym.gym_id = $2
+    AND user_gym.user_id = $1
+    `,
+    values: [userId, gymId],
+  };
+
+  return db.delete(query);
+};
+
+const addUserToGym = async (userId, gymId, isAdmin = false) => {
+  const query = {
+    text: `
+    INSERT INTO user_gym (user_id, gym_id, is_admin)
+    VALUES ($1, $2, $3);
+    `,
+    values: [userId, gymId, isAdmin],
+  };
+
+  return db.createRelationship(query);
 };
 
 module.exports = {
-  getUsersByGym,
-  getUserById,
+  addUserToGym,
   createUser,
+  getUserById,
+  getUsersByGym,
+  removeUser,
+  removeUserFromGym,
 };

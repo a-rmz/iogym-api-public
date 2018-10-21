@@ -29,26 +29,56 @@ functions:
             parameters:
               paths:
                 gymId: true
-  getUserById:
-    handler: users/handler.getUserById
+  addUserToGym:
+    handler: users/handler.addUserToGym
     events:
       - http:
           path: /gyms/{gymId}/users/{userId}
-          method: GET
-          resp: http
-          request:
-            parameters:
-              paths:
-                gymId: true
-                userId: true
-  createUser:
-    handler: users/handler.createUser
-    events:
-      - http:
-          path: /gyms/{gymId}/users
           method: POST
           resp: http
           request:
             parameters:
               paths:
                 gymId: true
+                userId: true
+  removeUserFromGym:
+    handler: users/handler.removeUserFromGym
+    events:
+      - http:
+          path: /gyms/{gymId}/users/{userId}
+          method: DELETE
+          resp: http
+          request:
+            parameters:
+              paths:
+                gymId: true
+                userId: true
+  getUserById:
+    handler: users/handler.getUserById
+    events:
+      - http:
+          path: /users/{userId}
+          method: GET
+          resp: http
+          request:
+            parameters:
+              paths:
+                userId: true
+  createUser:
+    handler: users/handler.createUser
+    events:
+      - http:
+          path: /users
+          method: POST
+          resp: http
+  removeUser:
+    handler: users/handler.removeUser
+    events:
+      - http:
+          path: /users/{userId}
+          method: DELETE
+          resp: http
+          request:
+            parameters:
+              paths:
+                userId: true
