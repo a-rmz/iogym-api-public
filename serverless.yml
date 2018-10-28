@@ -18,12 +18,14 @@ package:
     - .eslintrc.json
 
 functions:
+  # Users
   getUsersByGym:
     handler: users/handler.getUsersByGym
     events:
       - http:
           path: /gyms/{gymId}/users
           method: GET
+          cors: true
           resp: http
           request:
             parameters:
@@ -35,6 +37,7 @@ functions:
       - http:
           path: /gyms/{gymId}/users/{userId}
           method: POST
+          cors: true
           resp: http
           request:
             parameters:
@@ -47,6 +50,7 @@ functions:
       - http:
           path: /gyms/{gymId}/users/{userId}
           method: DELETE
+          cors: true
           resp: http
           request:
             parameters:
@@ -59,6 +63,7 @@ functions:
       - http:
           path: /users/{userId}
           method: GET
+          cors: true
           resp: http
           request:
             parameters:
@@ -77,8 +82,47 @@ functions:
       - http:
           path: /users/{userId}
           method: DELETE
+          cors: true
           resp: http
           request:
             parameters:
               paths:
                 userId: true
+  
+  # Sessions
+  getSessionsByUser:
+    handler: sessions/handler.getSessionsByUser
+    events:
+      - http:
+          path: /users/{userId}/sessions
+          method: GET
+          cors: true
+          resp: http
+          request:
+            parameters:
+              paths:
+                userId: true
+  getSessionById:
+    handler: sessions/handler.getSessionById
+    events:
+      - http:
+          path: /sessions/{sessionId}
+          method: GET
+          cors: true
+          resp: http
+          request:
+            parameters:
+              paths:
+                sesssionId: true
+  getFramesBySession:
+    handler: sessions/handler.getFramesBySession
+    events:
+      - http:
+          path: /sessions/{sessionId}/frames
+          method: GET
+          cors: true
+          resp: http
+          request:
+            parameters:
+              paths:
+                sesssionId: true
