@@ -1,6 +1,7 @@
 const {
   addUserToGym,
   createUser,
+  getGymsByUser,
   getUserById,
   getUsersByGym,
   removeUser,
@@ -78,4 +79,14 @@ module.exports.removeUser = async (params) => {
     return resNotFound('User');
   }
   return resEmpty(204);
+};
+
+module.exports.getGymsByUser = async (params) => {
+  const { pathParameters: { userId } } = params;
+  const gyms = await getGymsByUser(userId);
+
+  if (isArrayEmpty(gyms)) {
+    return resNotFound('Gyms');
+  }
+  return resJson(200, { gyms });
 };

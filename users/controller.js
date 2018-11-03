@@ -83,9 +83,25 @@ const addUserToGym = async (userId, gymId, isAdmin = false) => {
   return db.createRelationship(query);
 };
 
+const getGymsByUser = async (userId) => {
+  const query = {
+    text: `
+    SELECT g.gym_id, g.name, g.address, ug.is_admin
+    FROM gyms AS g
+    INNER JOIN user_gym AS ug
+    ON g.gym_id = ug.gym_id
+    WHERE ug.user_id = $1
+    `,
+    values: [userId],
+  };
+
+  return db.get(query);
+};
+
 module.exports = {
   addUserToGym,
   createUser,
+  getGymsByUser,
   getUserById,
   getUsersByGym,
   removeUser,

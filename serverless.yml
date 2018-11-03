@@ -88,6 +88,18 @@ functions:
             parameters:
               paths:
                 userId: true
+  getGymsByUser:
+    handler: users/handler.getGymsByUser
+    events:
+      - http:
+          path: /users/{userId}/gyms
+          method: GET
+          cors: true
+          resp: http
+          request:
+            parameters:
+              paths:
+                userId: true
   
   # Sessions
   getSessionsByUser:
