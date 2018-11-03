@@ -35,6 +35,20 @@ const getSessionById = async (sessionId) => {
   return db.get(query);
 };
 
+const updateSessionById = async (sessionId, { description }) => {
+  const query = {
+    text: `
+    UPDATE sessions
+    SET description = $2
+    WHERE session_id = $1
+    RETURNING *;
+    `,
+    values: [sessionId, description],
+  };
+
+  return db.get(query);
+};
+
 const getSessionFramesBySession = async (sessionId) => {
   const query = {
     text: `
@@ -52,4 +66,5 @@ module.exports = {
   getSessionById,
   getSessionsByUser,
   getSessionFramesBySession,
+  updateSessionById,
 };

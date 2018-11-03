@@ -126,6 +126,18 @@ functions:
             parameters:
               paths:
                 sesssionId: true
+  updateSessionById:
+    handler: sessions/handler.updateSessionById
+    events:
+      - http:
+          path: /sessions/{sessionId}
+          method: PUT
+          cors: true
+          resp: http
+          request:
+            parameters:
+              paths:
+                sesssionId: true
   getFramesBySession:
     handler: sessions/handler.getFramesBySession
     events:

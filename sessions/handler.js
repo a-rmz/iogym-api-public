@@ -2,6 +2,7 @@ const {
   getSessionById,
   getSessionsByUser,
   getSessionFramesBySession,
+  updateSessionById,
 } = require('./controller');
 const {
   isArrayEmpty,
@@ -17,14 +18,23 @@ module.exports.getSessionsByUser = async (params) => {
   if (isArrayEmpty(sessions)) {
     return resNotFound('Sessions');
   }
-  const res = resJson(200, { sessions });
-  console.log(res);
-  return res;
+  return resJson(200, { sessions });
 };
 
 module.exports.getSessionById = async (params) => {
-  const { pathParameters: { sessionId } } = params;
-  const session = await getSessionById(sessionId);
+  const { pathParameters: { sessionId }, body } = params;
+  const session = await getSessionById(sessionId, body);
+
+  if (isObjectEmpty(session)) {
+    return resNotFound('Session');
+  }
+  return resJson(200, { session });
+};
+
+module.exports.updateSessionById = async (params) => {
+  const { pathParameters: { sessionId }, body } = params;
+  const parsedBody = JSON.parse(body);
+  const session = await updateSessionById(sessionId, parsedBody);
 
   if (isObjectEmpty(session)) {
     return resNotFound('Session');
